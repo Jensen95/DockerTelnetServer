@@ -118,6 +118,11 @@ fabric.properties
 # .idea/misc.xml
 # *.ipr
 
+# Shitty xml files
+.idea/jsLibraryMappings.xml
+.idea/vcs.xml
+
+
 # Sonarlint plugin
 .idea/sonarlint
 
