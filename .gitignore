@@ -121,7 +121,11 @@ fabric.properties
 # Shitty xml files
 .idea/jsLibraryMappings.xml
 .idea/vcs.xml
-
+.idea/DockerTelnetServer.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/watcherTasks.xml
+.idea/inspectionProfiles/Project_Default.xml
 
 # Sonarlint plugin
 .idea/sonarlint
