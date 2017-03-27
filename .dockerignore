@@ -1,0 +1,4 @@
+# Standard Ignore
+.git/
+node_modules/
+npm-debug.log
