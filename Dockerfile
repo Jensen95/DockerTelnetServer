@@ -1,17 +1,20 @@
-FROM node:6
+FROM node:6-alpine
 
-WORKDIR /src
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+RUN apk upgrade --update-cache --available
+RUN apk add yarn
 
-RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install yarn
-RUN apt-get clean
+ENV DIR=/opt/docker-telnet
 
-# If you need npm, don't use a base tag
-ADD package.json .
-RUN yarn
+COPY package.json ${DIR}/
+COPY yarn.lock ${DIR}/
 
-ADD . .
+WORKDIR $DIR
+
+RUN cd ${DIR} && yarn && \
+  rm -rf /etc/ssl /usr/share/man /tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp
+
+COPY . $DIR
 
 EXPOSE 2323
 CMD npm start
