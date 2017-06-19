@@ -1,7 +1,7 @@
 'use strict'
 const net = require('net')
 
-const port = process.env.PORT || 2323
+const port = process.env.PORT || 10001
 let loggedIn = true
 
 const server = net.createServer((socket) => {

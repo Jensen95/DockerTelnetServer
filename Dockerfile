@@ -12,5 +12,5 @@ RUN cd ${DIR} && yarn && \
 
 COPY . $DIR
 
-EXPOSE 2323
+EXPOSE 10001
 CMD npm start
