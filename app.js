@@ -44,6 +44,9 @@ function handleData(data) {
         } else if(commandMatch = /^>>(Fade) (\d+) (([01])?(\d)?(\d))<<$/g.exec(command)) {
             const [ command, commandType, id, action ] = commandMatch
             return `>>${commandType} OK<<`
+        } else if(commandMatch = /^>>(Run) (.+)<<$/g.exec(command)) {
+            const [ command, commandType, action ] = commandMatch
+            return `>>${commandType} OK<<`
         } else {
             if (command.search(/>>Set/g) !== -1) {
                 return '>>Set ?<<'
@@ -51,6 +54,10 @@ function handleData(data) {
 
             if (command.search(/>>Fade/g) !== -1) {
                 return '>>Fade ?<<'
+            }
+
+            if (command.search(/>>Run/g) !== -1) {
+                return '>>Run ?<<'
             }
 
             // If command not found
