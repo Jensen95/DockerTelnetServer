@@ -5,7 +5,7 @@ const port = process.env.PORT || 10001
 let loggedIn = true
 
 const server = net.createServer((socket) => {
-    console.log('Client connected')
+    console.info('Client connected')
     socket.write('Welcome to the Telnet server!\n')
     socket.on('data', (data) => {
         // Checks if Ctrl + C is pressed or else parses data to client
@@ -13,10 +13,11 @@ const server = net.createServer((socket) => {
             socket.end()
         } else  {
             socket.write(`${handleData(data)}\n`)
+            console.log(data)
         }
     })
     socket.on('end', () => {
-        console.log('Client disconnected')
+        console.info('Client disconnected')
     })
 })
 
@@ -73,4 +74,4 @@ function handleData(data) {
 }
 server.listen(port)
 
-console.log(`Telnet server started at ${port}`)
+console.info(`Telnet server started at ${port}`)
