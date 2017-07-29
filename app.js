@@ -1,28 +1,33 @@
 'use strict'
 const net = require('net')
+const debug = require('debug')('zense:server')
 
 const port = process.env.PORT || 10001
 let loggedIn = true
 
 const server = net.createServer((socket) => {
-    console.info('Client connected')
+    debug('Client connected')
     socket.write('Welcome to the Telnet server!\n')
     socket.on('data', (data) => {
         // Checks if Ctrl + C is pressed or else parses data to client
         if(data.toString('hex') === 'fff4fffd06'){
             socket.end()
         } else  {
+            debug(`Debug: ${handleData(data)}\n`)
             socket.write(`${handleData(data)}\n`)
-            console.log(data)
         }
     })
     socket.on('end', () => {
-        console.info('Client disconnected')
+        debug('Client disconnected')
     })
 })
 
 function handleData(data) {
     const command = data.toString().replace(/[\r\n\t]+/, '').trim()
+
+    const debug = require('debug')('zense:server:handleData')
+
+    debug(`Got command, ${command}`)
 
     if(/^>>Login \d+<<$/.test(command)){
         loggedIn = true
@@ -68,10 +73,10 @@ function handleData(data) {
     else {
         // Doesn't return anything if there's no one logged and the command isn't Login
         // Logs the trash to the console
-        console.log(`Trash received: ${command}`)
+        debug(`Trash received: ${command}`)
         return ''
     }
 }
 server.listen(port)
 
-console.info(`Telnet server started at ${port}`)
+debug(`Telnet server started at ${port}`)
