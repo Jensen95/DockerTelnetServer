@@ -10,9 +10,9 @@ const server = net.createServer((socket) => {
     socket.write('Welcome to the Telnet server!\n')
     socket.on('data', (data) => {
         // Checks if Ctrl + C is pressed or else parses data to client
-        if(data.toString('hex') === 'fff4fffd06'){
+        if (data.toString('hex') === 'fff4fffd06') {
             socket.end()
-        } else  {
+        } else {
             debug(`Debug: ${handleData(data)}\n`)
             socket.write(`${handleData(data)}\n`)
         }
@@ -29,29 +29,32 @@ function handleData(data) {
 
     debug(`Got command, ${command}`)
 
-    if(/^>>Login \d+<<$/.test(command)){
+    if (/^>>Login \d+<<$/.test(command)) {
         loggedIn = true
         return '>>Login OK<<'
     }
-    else if(/^>>Login/.test(command)) {
+    else if (/^>>Login/.test(command)) {
         // Simulates wrong ID
         return '>>Login failed<<'
     }
-    else if(/^>>Logout<<$/.test(command)){
+    else if (/^>>Logout<<$/.test(command)) {
         return '>>Logout OK<<'
     }
-    else if(loggedIn){
+    else if (loggedIn) {
         let commandMatch
 
         // Commands available when logged in
-        if(commandMatch = /^>>(Set) (\d+) ([01])<<$/g.exec(command)) {
-            const [ command, commandType, id, action ] = commandMatch
+        if (commandMatch = /^>>(Set) (\d+) ([01])<<$/g.exec(command)) {
+            const [command, commandType, id, action] = commandMatch
             return `>>${commandType} OK<<`
-        } else if(commandMatch = /^>>(Fade) (\d+) (([01])?(\d)?(\d))<<$/g.exec(command)) {
-            const [ command, commandType, id, action ] = commandMatch
+        } else if (commandMatch = /^>>(Fade) (\d+) (([01])?(\d)?(\d))<<$/g.exec(command)) {
+            const [command, commandType, id, action] = commandMatch
             return `>>${commandType} OK<<`
-        } else if(commandMatch = /^>>(Scene Run) (.+)<<$/g.exec(command)) {
-            const [ command, commandType, action ] = commandMatch
+        } else if (commandMatch = /^>>(Scene Run) (.+)<<$/g.exec(command)) {
+            const [command, commandType, action] = commandMatch
+            return `>>${commandType} OK<<`
+        } else if (commandMatch = /^>>(Sluk Alt)<<$/g.exec(command)) {
+            const [command, commandType, action] = commandMatch
             return `>>${commandType} OK<<`
         } else {
             if (command.search(/>>Set/g) !== -1) {
@@ -77,6 +80,7 @@ function handleData(data) {
         return ''
     }
 }
+
 server.listen(port)
 
 debug(`Telnet server started at ${port}`)
